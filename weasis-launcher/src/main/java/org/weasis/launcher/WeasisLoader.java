@@ -73,8 +73,8 @@ public class WeasisLoader {
         downloadProgress = new javax.swing.JProgressBar();
         Font font = new Font("Dialog", Font.PLAIN, 12); //$NON-NLS-1$
         downloadProgress.setFont(font);
-        cancelButton = new javax.swing.JButton();
-        cancelButton.setFont(font);
+       // cancelButton = new javax.swing.JButton();
+       // cancelButton.setFont(font);
 
         RootPaneContainer frame = mainFrame.getRootPaneContainer();
 
@@ -101,8 +101,8 @@ public class WeasisLoader {
         downloadProgress.setStringPainted(true);
         downloadProgress.setString(LBL_LOADING);
 
-        cancelButton.setText(Messages.getString("WebStartLoader.cancel")); //$NON-NLS-1$
-        cancelButton.addActionListener(evt -> closing());
+       // cancelButton.setText(Messages.getString("WebStartLoader.cancel")); //$NON-NLS-1$
+       // cancelButton.addActionListener(evt -> closing());
 
         Icon icon;
         File iconFile = null;
@@ -122,7 +122,7 @@ public class WeasisLoader {
 
                 @Override
                 public int getIconWidth() {
-                    return 350;
+                    return 50;
                 }
 
                 @Override
@@ -146,13 +146,13 @@ public class WeasisLoader {
 
         JPanel panelProgress = new JPanel(new BorderLayout());
         panelProgress.setBackground(Color.WHITE);
-        panelProgress.add(loadingLabel, BorderLayout.NORTH);
+       // panelProgress.add(loadingLabel, BorderLayout.NORTH);
         panelProgress.add(downloadProgress, BorderLayout.CENTER);
-        panelProgress.add(cancelButton, BorderLayout.EAST);
+        //panelProgress.add(cancelButton, BorderLayout.EAST);
 
         panel.add(panelProgress, BorderLayout.SOUTH);
-        panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black),
-            BorderFactory.createEmptyBorder(3, 3, 3, 3)));
+       // panel.setBorder(BorderFactory.createCompoundBorder(BorderFactory.createLineBorder(Color.black),
+       //     BorderFactory.createEmptyBorder(3, 3, 3, 3)));
 
         container.add(panel, BorderLayout.CENTER);
 
@@ -231,7 +231,7 @@ public class WeasisLoader {
                 ((Window) container).dispose();
             }
             container = null;
-            cancelButton = null;
+            //cancelButton = null;
             downloadProgress = null;
             loadingLabel = null;
         });

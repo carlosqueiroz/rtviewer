@@ -77,23 +77,23 @@ import it.cnr.imaa.essi.lablib.gui.checkboxtree.TreeCheckingModel;
 public class RtDisplayTool extends PluginTool implements SeriesViewerListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(RtDisplayTool.class);
 
-    public static final String BUTTON_NAME = "RT Tool";
+    public static final String BUTTON_NAME = "Radioterapia";
 
     private static final SoftHashMap<String, RtSet> RtSet_Cache = new SoftHashMap<>();
 
     private final JTabbedPane tabbedPane = new JTabbedPane();
     private final JScrollPane rootPane;
-    private final JButton btnLoad = new JButton("Load RT");
-    private final JCheckBox cbDvhRecalculate = new JCheckBox("DVH recalculate");
+    private final JButton btnLoad = new JButton("Carregar DICOM RT");
+    private final JCheckBox cbDvhRecalculate = new JCheckBox("Recalcular DVH");
 
     private final CheckboxTree treeStructures;
     private final CheckboxTree treeIsodoses;
     private boolean initPathSelection;
     private DefaultMutableTreeNode rootNodeStructures = new DefaultMutableTreeNode("rootNode", true); //$NON-NLS-1$
     private DefaultMutableTreeNode rootNodeIsodoses = new DefaultMutableTreeNode("rootNode", true); //$NON-NLS-1$
-    private final JLabel lblRtStructureSet = new JLabel("Structure Set:");
+    private final JLabel lblRtStructureSet = new JLabel("Estrutura:");
     private final JComboBox<RtSpecialElement> comboRtStructureSet = new JComboBox<>();
-    private final JLabel lblRtPlan = new JLabel("Plan:");
+    private final JLabel lblRtPlan = new JLabel("Plano:");
     private final JComboBox<RtSpecialElement> comboRtPlan = new JComboBox<>();
     private final JLabel lblRtPlanName = new JLabel();
     private final JLabel lblRtPlanDose = new JLabel("Dose:");
@@ -125,11 +125,11 @@ public class RtDisplayTool extends PluginTool implements SeriesViewerListener {
         this.rootPane = new JScrollPane();
         this.dockable.setTitleIcon(new ImageIcon(RtDisplayTool.class.getResource("/icon/16x16/rtDose.png"))); //$NON-NLS-1$
         this.setDockableWidth(350);
-        this.btnLoad.setToolTipText("Populate RT objects from loaded DICOM study");
+        this.btnLoad.setToolTipText("Preencher objetos RT a partir do estudo DICOM carregado");
         // By default recalculate DVH only when it is missing for structure
         this.cbDvhRecalculate.setSelected(false);
         this.cbDvhRecalculate
-            .setToolTipText("When enabled recalculate DVH for all structures, otherwise recalculate only missing DVH");
+            .setToolTipText("Quando habilitado, recalcule o DVH para todas as estruturas, caso contrário, recalcule apenas DVH ausente");
         this.lblRtStructureSet.setVisible(false);
         this.comboRtStructureSet.setVisible(false);
         this.lblRtPlan.setVisible(false);
@@ -180,7 +180,7 @@ public class RtDisplayTool extends PluginTool implements SeriesViewerListener {
             }
         };
         treeIsodoses.setToolTipText(StringUtil.EMPTY_STRING);
-        this.nodeStructures = new DefaultMutableTreeNode("Structures", true);
+        this.nodeStructures = new DefaultMutableTreeNode("Estruturas", true);
         this.nodeIsodoses = new DefaultMutableTreeNode("Isodoses", true);
         this.initData();
     }
@@ -307,9 +307,9 @@ public class RtDisplayTool extends PluginTool implements SeriesViewerListener {
         panelDvh.add(cbDvhRecalculate);
         this.cbDvhRecalculate.setSelected(false);
         this.cbDvhRecalculate
-            .setToolTipText("When enabled recalculate DVH for all structures, otherwise recalculate only missing DVH");
+            .setToolTipText("Quando habilitado, recalcule o DVH para todas as estruturas, caso contrário, recalcule somente DVH ausente");
 
-        btnShowDvh = new JButton("Display DVH chart");
+        btnShowDvh = new JButton("Mostrar DVH");
         btnShowDvh.addActionListener(e -> showDvhChart());
         panelDvh.add(btnShowDvh);
 
@@ -335,7 +335,7 @@ public class RtDisplayTool extends PluginTool implements SeriesViewerListener {
                     structureDvh.appendChart(structure, dvhChart);
                 }
 
-                JDialog d = new JDialog(WinUtil.getParentWindow(this), "DVH Chart");
+                JDialog d = new JDialog(WinUtil.getParentWindow(this), "DVH Gráfico");
                 XChartPanel<XYChart> chartPanel = new XChartPanel<>(dvhChart);
                 d.getContentPane().add(chartPanel, BorderLayout.CENTER);
                 d.pack();
@@ -404,7 +404,7 @@ public class RtDisplayTool extends PluginTool implements SeriesViewerListener {
     public JSliderW createTransparencySlider(int labelDivision, boolean displayValueInTitle) {
         final JPanel panelSlider1 = new JPanel();
         panelSlider1.setLayout(new BoxLayout(panelSlider1, BoxLayout.Y_AXIS));
-        panelSlider1.setBorder(new TitledBorder("Graphic Opacity"));
+        panelSlider1.setBorder(new TitledBorder("Opacidade do Gráfico "));
         DefaultBoundedRangeModel model = new DefaultBoundedRangeModel(50, 0, 0, 100);
         JSliderW s = new JSliderW(model);
         s.setLabelDivision(labelDivision);
@@ -883,13 +883,13 @@ public class RtDisplayTool extends PluginTool implements SeriesViewerListener {
 
             StringBuilder buf = new StringBuilder();
             buf.append("<html>");
-            buf.append("Structure Information:<br>");
+            buf.append("Estruturas:<br>");
             if (StringUtil.hasText(layer.getStructure().getRoiObservationLabel())) {
-                buf.append("Observation Label: ");
+                buf.append("Observação: ");
                 buf.append(layer.getStructure().getRoiObservationLabel());
                 buf.append("<br>");
             }
-            buf.append(String.format("Thickness: %.2f<br>", layer.getStructure().getThickness()));
+            buf.append(String.format("Espessura: %.2f<br>", layer.getStructure().getThickness()));
             buf.append(String.format(source + " Volume: %.4f cm^3<br>", volume));
 
             if (structureDvh != null) {
@@ -923,10 +923,10 @@ public class RtDisplayTool extends PluginTool implements SeriesViewerListener {
 
             StringBuilder buf = new StringBuilder();
             buf.append("<html>");
-            buf.append("Isodose Information:<br>");
+            buf.append("Isodose:<br>");
             if (layer.getIsoDose() != null) {
                 buf.append(String.format("Level: %d %%<br>", layer.getIsoDose().getLevel()));
-                buf.append(String.format("Thickness: %.2f<br>", layer.getIsoDose().getThickness()));
+                buf.append(String.format("Espessura: %.2f<br>", layer.getIsoDose().getThickness()));
             }
             buf.append("</html>");
 
