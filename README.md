@@ -30,6 +30,23 @@ echo "Construindo o Aplicativo"
 cd weasis-distributions
 mvn clean package -Dportable=true -P pack200
  ```
+
+ Gerando Aplicativo com assinatura
+
+ ``` bash
+
+echo "Criar Chave"
+cd /usr/lib/jvm/java-8-oracle
+
+sudo keytool -genkey -v -keystore rtconnect.keystore -alias rtconnect -keyalg RSA -keysize 2048 -validity 10000
+
+echo "Voltar para a Pasta do Projeto"
+cd rtviewer/weasis-distributions
+
+ mvn clean package -Djarsigner.alias="rtconnect" -Djarsigner.storepass="rtconnect" -Djarsigner.keystore="/usr/lib/jvm/java-8-oracle/rtconnect.keystore" -Dportable=true -P pack200
+
+ ```
+
 # Executando Aplicativo Gerado
 Acesse a pasta rtviewer/weasis-distributions/target/portable-dist/
 Nesta Pasta, você poderá executar o aplicativo para Linux, Windows e MAC.
