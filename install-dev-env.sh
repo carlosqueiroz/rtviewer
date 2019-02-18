@@ -44,3 +44,5 @@ cd ~/Downloads/
 wget https://downloads.gradle.org/distributions/gradle-4.3-bin.zip
 cd /opt/ && sudo unzip ~/Downloads/gradle-4.3-bin.zip
 sudo update-alternatives --install /usr/bin/gradle gradle /opt/gradle-4.3/bin/gradle 1001
+
+sudo apt-get install -y maven 

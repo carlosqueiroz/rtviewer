@@ -61,4 +61,6 @@ e são atualizados no conteiner docker do rtconnect em toda reconstrução, conf
 
 https://github.com/carlosqueiroz/rt/blob/master/docker/docker-compose.yml#L809 
 
+# Aplicativo com Visualização de DICOM RT
 
+![Weasis](docs/3.png)
