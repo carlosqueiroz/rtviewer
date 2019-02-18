@@ -1,57 +1,64 @@
 [![License](https://img.shields.io/badge/License-EPL%202.0-blue.svg)](https://opensource.org/licenses/EPL-2.0) [![Build Status](https://travis-ci.com/nroduit/Weasis.svg?branch=master)](https://travis-ci.com/nroduit/Weasis)   
 [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.weasis%3Aweasis-framework&metric=ncloc)](https://sonarcloud.io/component_measures?id=org.weasis%3Aweasis-framework) [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.weasis%3Aweasis-framework&metric=reliability_rating)](https://sonarcloud.io/component_measures?id=org.weasis%3Aweasis-framework) [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.weasis%3Aweasis-framework&metric=sqale_rating)](https://sonarcloud.io/component_measures?id=org.weasis%3Aweasis-framework) [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.weasis%3Aweasis-framework&metric=security_rating)](https://sonarcloud.io/component_measures?id=org.weasis%3Aweasis-framework) [![Sonar](https://sonarcloud.io/api/project_badges/measure?project=org.weasis%3Aweasis-framework&metric=alert_status)](https://sonarcloud.io/dashboard?id=org.weasis%3Aweasis-framework)    
 
-Weasis is a free medical DICOM viewer used in healthcare by hospitals, health networks, multicenter research trials, and patients.
+O RT Connect Viewer é baseado no visualizador Weasis em Java
 
 ![Weasis](weasis-distributions/resources/images/about.png)
 
-* [General information](https://nroduit.github.io)
-* [Live Demo with different datasets](https://nroduit.github.io/en/demo)
-* [Download binary releases](http://sourceforge.net/projects/dcm4che/files/Weasis)
+* [Informações sobre o Weasis](https://nroduit.github.io)
+
 * [Issues](https://github.com/nroduit/Weasis/issues) ([Old Issue Tracker](https://dcm4che.atlassian.net/projects/WEA))
+
+# Instalando Ambiente de Desenvolvimento
+``` bash
+echo "Instalando Java, Maven e Eclipse para Ubuntu 16.06"
+sudo sh install-dev-env.sh
+```
 
 # Build Weasis
 
-The master branch contains Weasis 3.x.x (requires Java 8+) and the old branches are 2.5.x, 2.0.x (Java 6+) and 1.2.x (Java 6+).
+O RT Connect Viewer é baseando no  Weasis 3.x.x (Necessitando de  Java 8+)
 
-See [How to build Weasis](https://nroduit.github.io/en/getting-started/building-weasis)
+Documentação [Oficial do Weasis](https://nroduit.github.io/en/getting-started/building-weasis)
+``` bash
+echo "Clonando o Projeto"
+git clone https://github.com/carlosqueiroz/rtviewer
+cd rtviewer/
+echo "Rodando o Maven"
+mvn clean install
+echo "Construindo o Aplicativo"
+cd weasis-distributions
+mvn clean package -Dportable=true -P pack200
+ ```
+# Executando Aplicativo Gerado
+Acesse a pasta rtviewer/weasis-distributions/target/portable-dist/
+Nesta Pasta, você poderá executar o aplicativo para Linux, Windows e MAC.
 
-# [Release History](CHANGELOG.md)
+# Executando Aplicativo JNLP no Servidor
 
-# General Features
-* Flexible integration to HIS or PHR (see [weasis-pacs-connector](https://github.com/nroduit/weasis-pacs-connector))
-* Web-based distribution (Java Webstart)
-* Desktop portable distribution (Windows, Mac OS X, and Linux)
-* Embedded DICOM viewer (portable distribution) in CD/DVD or other portable media
-* Can be configured with very low memory footprint. Do not require modern hardware.
-* [Multi-language support](https://nroduit.github.io/en/getting-started/translating/)
-* [Configuration of preferences](https://nroduit.github.io/en/basics/customize/preferences/) on server-side and client-side
-* [API for building custom plug-ins](https://nroduit.github.io/en/basics/customize/build-plugins/)
-* DICOM Send (storeSCU and STOW RS)
-* DICOM Query/Retrieve (C-GET, C-MOVE and WADO)
-* Dicomizer module (allow importing standard images and convert them in DICOM)
+Foi gerado em  rtviewer/weasis-distributions/target/web-dist/ um arquivo .war, este arquivo deve ser enviado para o Wildfly para que o software seja executado em conjunto com o servidor de armazenamento de imagens.
+Acesse o Wildfly 
+http://{IP_servidor}:9990/console/App.html
+ou
+http://192.168.0.87:9990/console/App.html
+Login:admin
+Senha:admin
 
-# Viewer Features
-![screenshot](https://user-images.githubusercontent.com/993975/39397039-2180c178-4af9-11e8-9c72-2c1e9aa16eae.jpg)    
-* Display all kinds of DICOM files (including multi-frame, enhanced, MPEG-2, MPEG-4, MIME Encapsulation, SR, PR, KOS, AU, RT and ECG)
-* Viewer for common image formats (TIFF, BMP, GIF, JPEG, PNG, RAS, HDR, and PNM)
-* Image manipulation (pan, zoom, windowing, presets, rotation, flip, scroll, crosshair, filtering...)
-* Layouts for comparing series or studies
-* Advanced series synchronization options
-* Display Presentation States (GSPS) and Key Object Selection
-* Create key images (Key Object Selection object) by selection
-* Support of Modality LUTs, VOI LUTs, and Presentation LUTs (even non-linear)
-* Support of several screens and full-screen mode
-* Multiplanar reconstructions and Maximum Intensity Projection
-* Display Structured Reports
-* Display cross-lines
-* Measurement and annotation tools
-* Region statistics of pixels (Min, Max, Mean, StDev)
-* SUV measurement
-* Save measurements and annotations in DICOM PR or XML file
-* Import CD/DVD and local DICOM files
-* Export DICOM with several options (DICOMDIR, ZIP, ISO image file with Weasis, TIFF, JPEG, PNG...)
-* Magnifier glass
-* Native and DICOM printing
-* Read DICOM image containing float or double data (Parametric Map)
-* DICOM ECG Viewer
+Após o Login Clique na Aba Deployment
+![Weasis](docs/1.png)
+
+E agora envie o arquivo  gerado  rtviewer/weasis-distributions/target/web-dist/{arquivo}.war clicando em ADD
+
+![Weasis](docs/2.png)
+
+O Arquivo weasis-pacs-connector.war  que está  listado no Wildfly pode ser construido a partir de : https://github.com/nroduit/weasis-pacs-connector
+
+Os arquivos de Propriedades que fazem a conexão (gerando o URL para download) do wildfly com o weasis estão em
+estão em :
+https://github.com/carlosqueiroz/rt/tree/master/docker/pacs/wildfly/standalone/configuration
+
+e são atualizados no conteiner docker do rtconnect em toda reconstrução, conforme ilustra a linha:
+
+https://github.com/carlosqueiroz/rt/blob/master/docker/docker-compose.yml#L809 
+
+
